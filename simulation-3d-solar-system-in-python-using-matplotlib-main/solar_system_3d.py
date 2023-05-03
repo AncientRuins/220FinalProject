@@ -26,12 +26,19 @@ class SolarSystem:
 
     def add_body(self, body):
         self.bodies.append(body)
+        
+    def remove_body(self, body):
+        self.bodies.remove(body)
 
     def update_all(self):
         self.bodies.sort(key=lambda item: item.position[0])
         for body in self.bodies:
             body.move()
             body.draw()
+
+    def move_all(self):
+        self.calculate_all_body_interactions()
+        self.draw_all()
 
     def draw_all(self):
         self.ax.set_xlim((-self.size / 2, self.size / 2))
@@ -102,7 +109,19 @@ class SolarSystemBody:
     def accelerate_due_to_gravity(self, other):
         distance = Vector(*other.position) - Vector(*self.position)
         distance_mag = distance.get_magnitude()
-
+        
+        if distance_mag < self.display_size or distance_mag < other.display_size:
+            if self.mass < other.mass:
+                #delete this
+                other.velocity = (other.velocity * other.mass + self.velocity * self.mass)/(other.mass + self.mass)
+                other.mass += self.mass
+                self.solar_system.remove_body(self)
+            else:
+                self.velocity += (other.velocity * other.mass + self.velocity * self.mass)/(other.mass + self.mass)
+                self.mass += other.mass
+                other.solar_system.remove_body(other)
+                
+        
         force_mag = self.mass * other.mass / (distance_mag ** 2)
         force = distance.normalize() * force_mag
 
