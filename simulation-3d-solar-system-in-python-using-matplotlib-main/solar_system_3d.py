@@ -3,6 +3,7 @@
 import itertools
 import math
 import matplotlib.pyplot as plt
+import numpy as np
 
 from vectors import Vector
 
@@ -16,7 +17,9 @@ class SolarSystem:
         self.z_max = self.size/2
         self.z_min = -self.size/2
 
+        # self.projection_history = np.array([0, 0])
         self.projection_2d = projection_2d
+        
         self.bodies = []
 
         self.fig, self.ax = plt.subplots(
@@ -132,6 +135,8 @@ class SolarSystemBody:
             color=self.colour
         )
         if self.solar_system.projection_2d:
+            # np.append(self.solar_system.projection_history, [self.position[0], self.position[1]])
+            # print(self.solar_system.projection_history)
             self.solar_system.ax.plot(
                 self.position[0],
                 self.position[1],
