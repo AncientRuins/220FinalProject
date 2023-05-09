@@ -5,8 +5,8 @@ from solar_system_3d import SolarSystem, Sun, Planet
 solar_system = SolarSystem(400, projection_2d=True)
 
 suns = (
-    Sun(solar_system, position=(40, 40, 40), velocity=(6, 0, 6)),
-    Sun(solar_system, position=(-40, -40, 40), velocity=(-6, 0, -6)),
+    Sun(solar_system, position=(40, 40, 40), velocity=(12, 0, 12)),
+    Sun(solar_system, position=(-40, -40, 40), velocity=(-12, 0, -12)),
 )
 
 '''planets = (

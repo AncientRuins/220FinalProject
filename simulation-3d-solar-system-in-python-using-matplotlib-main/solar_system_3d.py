@@ -9,6 +9,13 @@ from vectors import Vector
 class SolarSystem:
     def __init__(self, size, projection_2d=False):
         self.size = size
+        self.x_max = self.size/2
+        self.x_min = -self.size/2
+        self.y_max = self.size/2
+        self.y_min = -self.size/2
+        self.z_max = self.size/2
+        self.z_min = -self.size/2
+
         self.projection_2d = projection_2d
         self.bodies = []
 
@@ -31,6 +38,34 @@ class SolarSystem:
         self.bodies.remove(body)
 
     def update_all(self):
+        xmax = self.size/2
+        xmin = -self.size/2
+        ymax = self.size/2
+        ymin = -self.size/2
+        zmax = self.size/2
+        zmin = -self.size/2
+
+        for body in self.bodies:
+            if body.position[0] > xmax:
+                xmax = body.position[0]
+            elif body.position[0] < xmin:
+                xmin = body.position[0]
+            elif body.position[1] > ymax:
+                ymax = body.position[1]
+            elif body.position[1] < ymin:
+                ymin = body.position[1]
+            if body.position[2] > zmax:
+                zmax = body.position[2]
+            elif body.position[2] < zmin:
+                zmin = body.position[2] 
+
+        self.x_min = xmin
+        self.x_max = xmax
+        self.y_min = ymin
+        self.y_max = ymax
+        self.z_min = zmin
+        self.z_max = zmax
+
         self.bodies.sort(key=lambda item: item.position[0])
         for body in self.bodies:
             body.move()
@@ -41,9 +76,9 @@ class SolarSystem:
         self.draw_all()
 
     def draw_all(self):
-        self.ax.set_xlim((-self.size / 2, self.size / 2))
-        self.ax.set_ylim((-self.size / 2, self.size / 2))
-        self.ax.set_zlim((-self.size / 2, self.size / 2))
+        self.ax.set_xlim((self.x_min, self.x_max))
+        self.ax.set_ylim((self.y_min, self.y_max))
+        self.ax.set_zlim((self.z_min, self.z_max))
         if self.projection_2d:
             self.ax.xaxis.set_ticklabels([])
             self.ax.yaxis.set_ticklabels([])
