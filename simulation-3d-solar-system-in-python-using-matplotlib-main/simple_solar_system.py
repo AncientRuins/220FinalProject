@@ -38,13 +38,13 @@ t = 0.0
     
 
 for i in range(0, n):
-    mass = float(input("\nNow requesting information about the next object.\nWhat is the mass of the object (in solar masses): "))
-    xpos = float(input("What is the location in the x-direction (in millions of km): "))
-    ypos = float(input("What is the location in the y-direction (in millions of km): "))
-    zpos = float(input("What is the location in the z-direction (in millions of km): "))
-    xvel = float(input("What is the velocity in the x-direction (in millions of km / year): "))
-    yvel = float(input("What is the velocity in the y-direction (in millions of km / year): "))
-    zvel = float(input("What is the velocity in the z-direction (in millions of km / year): "))
+    mass = float(input("\nNow requesting information about the next object.\nWhat is the mass of the object: "))
+    xpos = float(input("What is the location in the x-direction: "))
+    ypos = float(input("What is the location in the y-direction: "))
+    zpos = float(input("What is the location in the z-direction: "))
+    xvel = float(input("What is the velocity in the x-direction: "))
+    yvel = float(input("What is the velocity in the y-direction: "))
+    zvel = float(input("What is the velocity in the z-direction: "))
     print(mass, " ", xpos, " ", ypos, " ", zpos, " ", xvel, " ", yvel, " ", zvel)
     Planet(solar_system, mass=mass, position=(xpos, ypos, zpos), velocity=(xvel, yvel, zvel))
     
