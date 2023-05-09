@@ -117,7 +117,7 @@ class SolarSystemBody:
                 other.mass += self.mass
                 self.solar_system.remove_body(self)
             else:
-                self.velocity += (other.velocity * other.mass + self.velocity * self.mass)/(other.mass + self.mass)
+                self.velocity = (other.velocity * other.mass + self.velocity * self.mass)/(other.mass + self.mass)
                 self.mass += other.mass
                 other.solar_system.remove_body(other)
                 

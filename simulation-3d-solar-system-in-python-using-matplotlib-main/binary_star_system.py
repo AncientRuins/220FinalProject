@@ -9,7 +9,7 @@ suns = (
     Sun(solar_system, position=(-40, -40, 40), velocity=(-6, 0, -6)),
 )
 
-planets = (
+'''planets = (
     Planet(
         solar_system,
         10,
@@ -22,6 +22,13 @@ planets = (
         position=(0, 0, 0),
         velocity=(-11, 11, 0),
     ),
+)'''
+
+Planet(
+    solar_system,
+    20,
+    position=(0, 0, 0),
+    velocity=(-11, 11, 0),
 )
 
 while True:
