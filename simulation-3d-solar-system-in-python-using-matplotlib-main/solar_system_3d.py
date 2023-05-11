@@ -1,5 +1,3 @@
-# solar_system_3d.py
-
 import itertools
 import math
 import matplotlib.pyplot as plt
@@ -8,7 +6,9 @@ import numpy as np
 from vectors import Vector
 
 class SolarSystem:
+    #Initialize the system with default values
     def __init__(self, size, projection_2d=False):
+        #These are the default dimensions of the system
         self.size = size
         self.x_max = self.size/2
         self.x_min = -self.size/2
@@ -16,12 +16,12 @@ class SolarSystem:
         self.y_min = -self.size/2
         self.z_max = self.size/2
         self.z_min = -self.size/2
-
-        # self.projection_history = np.array([0, 0])
+        #This is the information for the 2D projection
+        self.projection_history = np.array([0, 0])
         self.projection_2d = projection_2d
-        
+        #The list of bodies in the system
         self.bodies = []
-
+        #The plot on which the bodies will be drawn
         self.fig, self.ax = plt.subplots(
             1,
             1,
@@ -39,7 +39,7 @@ class SolarSystem:
         
     def remove_body(self, body):
         self.bodies.remove(body)
-
+    #Updates the plot limits and the locations of the bodies
     def update_all(self):
         xmax = self.size/2
         xmin = -self.size/2
@@ -73,11 +73,12 @@ class SolarSystem:
         for body in self.bodies:
             body.move()
             body.draw()
-
+    #Moves all bodies in the system according to the forces
     def move_all(self):
         self.calculate_all_body_interactions()
         self.draw_all()
-
+    #Changes the plot dimensions according to the calculated limits
+    #Also used to prepare the plot for the next frame by clearing the previous
     def draw_all(self):
         self.ax.set_xlim((self.x_min, self.x_max))
         self.ax.set_ylim((self.y_min, self.y_max))
@@ -96,11 +97,12 @@ class SolarSystem:
         for idx, first in enumerate(bodies_copy):
             for second in bodies_copy[idx + 1:]:
                 first.accelerate_due_to_gravity(second)
-
+#The default parent class for all bodies
 class SolarSystemBody:
+    #The display size scaling and minimum size
     min_display_size = 10
     display_log_base = 1.3
-
+    #The initializer for this body type
     def __init__(
         self,
         solar_system,
@@ -135,8 +137,6 @@ class SolarSystemBody:
             color=self.colour
         )
         if self.solar_system.projection_2d:
-            # np.append(self.solar_system.projection_history, [self.position[0], self.position[1]])
-            # print(self.solar_system.projection_history)
             self.solar_system.ax.plot(
                 self.position[0],
                 self.position[1],
@@ -149,10 +149,9 @@ class SolarSystemBody:
     def accelerate_due_to_gravity(self, other):
         distance = Vector(*other.position) - Vector(*self.position)
         distance_mag = distance.get_magnitude()
-        
+        #Determine if a collision is happening (the objects are overlapping)
         if distance_mag < self.display_size or distance_mag < other.display_size:
             if self.mass < other.mass:
-                #delete this
                 other.velocity = (other.velocity * other.mass + self.velocity * self.mass)/(other.mass + self.mass)
                 other.mass += self.mass
                 self.solar_system.remove_body(self)
@@ -161,10 +160,10 @@ class SolarSystemBody:
                 self.mass += other.mass
                 other.solar_system.remove_body(other)
                 
-        
+        #Calculate the force
         force_mag = self.mass * other.mass / (distance_mag ** 2)
         force = distance.normalize() * force_mag
-
+        #Apply the corresponding acceleration
         reverse = 1
         for body in self, other:
             acceleration = force / body.mass
